@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BocaJerte | Cafetería IES Valle del Jerte (Plasencia)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                        jerte: {
+                            green: '#15803d',
+                            cherry: '#9f1239',
+                            dark: '#1c1917'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(249, 115, 22, 0.15), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(159, 18, 57, 0.1), transparent 40%);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #ea580c 0%, #9f1239 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.92; transform: scale(1.02); }
+        }
+    </style>
+</head>
+<body class="font-sans bg-stone-50 text-stone-800 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-stone-200/60" id="navbar">
+        <div class="max-w-7xl mx-mx auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform duration-300">
+                        <i class="fa-solid fa-sandwich text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-heading font-extrabold text-2xl tracking-tight text-stone-900">Boca<span class="text-brand-600">Jerte</span></span>
+                        <span class="block text-[10px] font-semibold text-stone-400 tracking-wider uppercase -mt-1">IES Valle del Jerte · Plasencia</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#como-funciona" class="text-sm font-medium text-stone-600 hover:text-brand-600 transition-colors">¿Cómo Funciona?</a>
+                    <a href="#menu" class="text-sm font-medium text-stone-600 hover:text-brand-600 transition-colors">Menú de Bocatas</a>
+                    <a href="#ventajas" class="text-sm font-medium text-stone-600 hover:text-brand-600 transition-colors">Ventajas</a>
+                    <a href="#impacto" class="text-sm font-medium text-stone-600 hover:text-brand-600 transition-colors">El Proyecto</a>
+                </div>
+
+                <!-- Action Button -->
+                <div class="hidden md:flex items-center gap-4">
+                    <button onclick="openModal()" class="px-5 py-2.5 rounded-full bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 transition-all duration-200 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-amber-300"></i>
+                        <span>Reserva Express</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg text-stone-600 hover:text-stone-900 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-stone-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#como-funciona" class="block py-2 text-stone-700 font-medium hover:text-brand-600">¿Cómo Funciona?</a>
+            <a href="#menu" class="block py-2 text-stone-700 font-medium hover:text-brand-600">Menú de Bocatas</a>
+            <a href="#ventajas" class="block py-2 text-stone-700 font-medium hover:text-brand-600">Ventajas</a>
+            <a href="#impacto" class="block py-2 text-stone-700 font-medium hover:text-brand-600">El Proyecto</a>
+            <button onclick="openModal()" class="w-full mt-2 py-3 rounded-xl bg-brand-600 text-white font-semibold text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-bolt text-amber-300"></i> Reserva Express
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 hero-gradient overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Content Column -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <!-- Top Pill Badge -->
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100/80 border border-orange-200 text-brand-800 text-xs sm:text-sm font-semibold shadow-sm">
+                        <span class="flex h-2 w-2 rounded-full bg-brand-600 animate-ping"></span>
+                        <i class="fa-solid fa-graduation-cap text-brand-600"></i>
+                        Iniciativa Digital en el IES Valle del Jerte (Plasencia)
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-stone-900 tracking-tight leading-none">
+                        ¡Adiós a las colas! <br class="hidden sm:inline">
+                        Tu bocadillo listo para el <span class="text-gradient">recreo</span>.
+                    </h1>
+
+                    <!-- Paragraph Description -->
+                    <p class="text-stone-600 text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Pide tu almuerzo online antes de las 10:00 h, paga con 1-click o al recoger y disfruta de tus 30 minutos de recreo al 100% en la cafetería del instituto.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <button onclick="openModal()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-amber-500 hover:from-brand-700 hover:to-amber-600 text-white font-bold text-lg shadow-xl shadow-brand-500/25 hover:shadow-2xl hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-utensils"></i>
+                            <span>Hacer mi Reserva</span>
+                        </button>
+                        <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white hover:bg-stone-100 text-stone-800 font-bold text-lg border border-stone-200 shadow-sm transition-all duration-200 flex items-center justify-center gap-2">
+                            <span>Ver la Carta</span>
+                            <i class="fa-solid fa-arrow-down text-sm text-stone-400"></i>
+                        </a>
+                    </div>
+
+                    <!-- Trust Stats & Badges -->
+                    <div class="pt-6 border-t border-stone-200/80 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0">
+                        <div class="text-center lg:text-left">
+                            <p class="font-heading font-extrabold text-2xl text-stone-900">0 min</p>
+                            <p class="text-xs text-stone-500">Espera en cola</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <p class="font-heading font-extrabold text-2xl text-brand-600">100%</p>
+                            <p class="text-xs text-stone-500">Pan recién hecho</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <p class="font-heading font-extrabold text-2xl text-emerald-600">Local</p>
+                            <p class="text-xs text-stone-500">Ingredientes del Jerte</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Visual Column (Interactive Mockup Card) -->
+                <div class="lg:col-span-5 relative">
+                    <!-- Decorative Background Blob -->
+                    <div class="absolute -top-6 -left-6 w-72 h-72 bg-amber-400/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -bottom-6 -right-6 w-72 h-72 bg-brand-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <!-- Sandwich Highlight Card -->
+                    <div class="relative bg-white/90 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-white/60 space-y-6">
+                        <div class="relative h-64 rounded-2xl overflow-hidden group">
+                            <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Bocadillo Jamón Ibérico Jerte" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/600x400/ea580c/ffffff?text=Bocadillos+IES+Valle+del+Jerte'">
+                            <span class="absolute top-4 right-4 bg-brand-600 text-white font-bold px-3 py-1 rounded-full text-xs shadow-md">
+                                ★ El Más Pedido
+                            </span>
+                            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 text-white">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-amber-300">Especialidad de la Casa</span>
+                                <h3 class="font-heading font-bold text-xl">El Jerteño Ibérico</h3>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-stone-500 text-sm"><i class="fa-solid fa-bread-slice text-amber-600 mr-1"></i> Pan crujiente artesanal</span>
+                                <span class="font-heading font-extrabold text-2xl text-stone-900">2,60 €</span>
+                            </div>
+                            <p class="text-xs text-stone-500">Jamón ibérico de bellota, tomate restregado de la huerta de Plasencia y aceite de oliva VE.</p>
+                        </div>
+
+                        <!-- Mini Demo Ticket Card -->
+                        <div class="bg-amber-50/80 rounded-xl p-4 border border-amber-200/60 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-700">
+                                    <i class="fa-solid fa-qrcode text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-stone-900">Recogida: Recreo (11:15 h)</p>
+                                    <p class="text-[11px] text-stone-500">Mostrador Prioritario Cafetería</p>
+                                </div>
+                            </div>
+                            <button onclick="openModalWithSandwich('El Jerteño Ibérico', '2.60')" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs transition-colors">
+                                Probar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="como-funciona" class="py-20 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-brand-600 font-bold text-sm uppercase tracking-widest">Sencillo, rápido y digital</span>
+                <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-stone-900">¿Cómo funciona BocaJerte en 3 pasos?</h2>
+                <p class="text-stone-600">Olvídate de malgastar el recreo esperando en la cola de la cafetería.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                <!-- Connecting Line for Desktop -->
+                <div class="hidden md:block absolute top-1/2 left-1/6 right-1/6 h-0.5 bg-dashed border-t-2 border-dashed border-stone-200 -z-0"></div>
+
+                <!-- Step 1 -->
+                <div class="relative bg-stone-50 rounded-3xl p-8 border border-stone-200/80 hover:shadow-xl transition-all duration-300 group">
+                    <div class="w-16 h-16 rounded-2xl bg-brand-100 text-brand-600 font-heading font-extrabold text-2xl flex items-center justify-center mb-6 group-hover:bg-brand-600 group-hover:text-white transition-colors duration-300 shadow-md">
+                        1
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-stone-900 mb-3">Elige tu Bocata</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">
+                        Entra a la web antes de las 10:00 h. Explora la carta con bocadillos fríos, calientes, suplementos o raciones especiales.
+                    </p>
+                    <div class="mt-6 flex items-center text-xs font-semibold text-brand-600 gap-2">
+                        <i class="fa-regular fa-clock"></i> Cierre de pedidos a las 10:00 h
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative bg-stone-50 rounded-3xl p-8 border border-stone-200/80 hover:shadow-xl transition-all duration-300 group">
+                    <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-700 font-heading font-extrabold text-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300 shadow-md">
+                        2
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-stone-900 mb-3">Confirma tu Curso</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">
+                        Indica tu nombre y curso (ESO, Bachillerato, FP o Profesorado) para organizar la entrega exprés por lotes.
+                    </p>
+                    <div class="mt-6 flex items-center text-xs font-semibold text-amber-700 gap-2">
+                        <i class="fa-solid fa-id-card"></i> Asignación automática por aula
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative bg-stone-50 rounded-3xl p-8 border border-stone-200/80 hover:shadow-xl transition-all duration-300 group">
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-700 font-heading font-extrabold text-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300 shadow-md">
+                        3
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-stone-900 mb-3">¡Recoge en el Recreo!</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">
+                        Acércate a la barra preferente "BocaJerte", enseña tu código QR o di tu número de pedido y recibe tu bocadillo recién hecho.
+                    </p>
+                    <div class="mt-6 flex items-center text-xs font-semibold text-emerald-700 gap-2">
+                        <i class="fa-solid fa-bolt"></i> Entrega en menos de 30 segundos
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sandwich Interactive Menu Grid -->
+    <section id="menu" class="py-20 bg-stone-100/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <span class="text-brand-600 font-bold text-sm uppercase tracking-widest">Nuestra Carta Diaria</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-stone-900 mt-1">Los Bocatas de la Cafetería</h2>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-stone-200 shadow-sm" id="filter-tabs">
+                    <button onclick="filterMenu('todos')" class="filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-brand-600 text-white transition-all">Todos</button>
+                    <button onclick="filterMenu('frios')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-stone-600 hover:text-stone-900 transition-all">Bocadillos Fríos</button>
+                    <button onclick="filterMenu('calientes')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-stone-600 hover:text-stone-900 transition-all">Calientes</button>
+                    <button onclick="filterMenu('veggie')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-stone-600 hover:text-stone-900 transition-all">Veggie / Saludables</button>
+                </div>
+            </div>
+
+            <!-- Grid Container -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="sandwich-grid">
+                
+                <!-- Card 1: El Jerteño -->
+                <div class="sandwich-card frios bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80" alt="El Jerteño" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-white font-bold px-3 py-1 rounded-full text-xs">2,60 €</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Frío</span>
+                                <span class="bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Embutido Top</span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-stone-900">El Jerteño Ibérico</h3>
+                            <p class="text-stone-500 text-xs leading-relaxed">Jamón ibérico de bellota de la región, restregado con tomate fresco de la huerta de Plasencia y aceite de oliva extra.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModalWithSandwich('El Jerteño Ibérico', '2.60')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-brand-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Reservar Bocata
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 2: La Tormenta de Lomo -->
+                <div class="sandwich-card calientes bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=600&q=80" alt="Bocadillo Lomo" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-white font-bold px-3 py-1 rounded-full text-xs">2,50 €</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-orange-100 text-orange-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Caliente</span>
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Queso Fundido</span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-stone-900">La Tormenta de Lomo</h3>
+                            <p class="text-stone-500 text-xs leading-relaxed">Cinta de lomo a la plancha, queso semicurado derretido y pimiento verde frito en pan baguette recién horneado.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModalWithSandwich('La Tormenta de Lomo', '2.50')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-brand-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Reservar Bocata
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 3: Tortilla Suprema -->
+                <div class="sandwich-card calientes frios bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=600&q=80" alt="Tortilla" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-white font-bold px-3 py-1 rounded-full text-xs">2,30 €</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Clásico</span>
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Con/Sin Cebolla</span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-stone-900">Tortilla Suprema & Alioli</h3>
+                            <p class="text-stone-500 text-xs leading-relaxed">Jugosa tortilla de patatas recién hecha al estilo tradicional con un toque suave de alioli cacereño.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModalWithSandwich('Tortilla Suprema', '2.30')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-brand-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Reservar Bocata
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 4: Veggie Delicia -->
+                <div class="sandwich-card veggie bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80" alt="Veggie" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-white font-bold px-3 py-1 rounded-full text-xs">2,40 €</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">100% Veggie</span>
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Saludable</span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-stone-900">Veggie Delicia del Jerte</h3>
+                            <p class="text-stone-500 text-xs leading-relaxed">Hummus casero de garbanzo, escalivada de pimientos asados, berenjena, brotes verdes y frutos secos.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModalWithSandwich('Veggie Delicia', '2.40')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-brand-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Reservar Bocata
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 5: Serranito del Valle -->
+                <div class="sandwich-card calientes bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80" alt="Serranito" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-white font-bold px-3 py-1 rounded-full text-xs">2,70 €</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-orange-100 text-orange-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Caliente</span>
+                                <span class="bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Top Ventas</span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-stone-900">Serranito del Valle</h3>
+                            <p class="text-stone-500 text-xs leading-relaxed">Lomo a la plancha, jamón serrano crujiente, pimiento verde asado y rodaja de tomate natural.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModalWithSandwich('Serranito del Valle', '2.70')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-brand-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Reservar Bocata
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 6: Pollo Crunch & Salsa -->
+                <div class="sandwich-card calientes bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=600&q=80" alt="Pollo" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-white font-bold px-3 py-1 rounded-full text-xs">2,60 €</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-orange-100 text-orange-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Caliente</span>
+                                <span class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Crujiente</span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-stone-900">Pollo Crunch & Miel-Mostaza</h3>
+                            <p class="text-stone-500 text-xs leading-relaxed">Pechuga de pollo crujiente, lechuga romana, tomate y nuestra salsa casera de miel y mostaza.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModalWithSandwich('Pollo Crunch', '2.60')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-brand-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Reservar Bocata
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 7: Queso de la Serena & Membrillo -->
+                <div class="sandwich-card frios veggie bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1528736235302-52922df5c122?auto=format&fit=crop&w=600&q=80" alt="Queso" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-white font-bold px-3 py-1 rounded-full text-xs">2,40 €</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Frío</span>
+                                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Gourmet Local</span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-stone-900">Queso Curado & Nueces</h3>
+                            <p class="text-stone-500 text-xs leading-relaxed">Queso semicurado extremeño, dulce de membrillo artesano y picado de nueces del Valle.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModalWithSandwich('Queso Curado & Nueces', '2.40')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-brand-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Reservar Bocata
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 8: Atún Fresco y Pimientos -->
+                <div class="sandwich-card frios bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" alt="Atún" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-white font-bold px-3 py-1 rounded-full text-xs">2,30 €</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Frío</span>
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">Mar y Huerta</span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-stone-900">Atún, Pimiento & Huevo</h3>
+                            <p class="text-stone-500 text-xs leading-relaxed">Atún claro en aceite de oliva, huevo duro cortado a láminas y pimientos del piquillo asados.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModalWithSandwich('Atún, Pimiento & Huevo', '2.30')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-brand-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Reservar Bocata
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Why This Project? Benefits & Impact -->
+    <section id="ventajas" class="py-20 bg-stone-900 text-white relative overflow-hidden">
+        <!-- Subtle Glow Background -->
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-jerte-cherry/10 rounded-full blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-brand-500 font-bold text-sm uppercase tracking-widest">Innovación Educativa & Social</span>
+                <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">¿Por qué nace BocaJerte en el instituto?</h2>
+                <p class="text-stone-400">Una solución pensada para mejorar la convivencia, la alimentación saludable y la gestión eficiente en el IES Valle del Jerte.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Benefit 1 -->
+                <div class="bg-stone-800/80 rounded-3xl p-6 border border-stone-700/60 hover:border-brand-500/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Más Recreo Libre</h3>
+                    <p class="text-stone-400 text-xs leading-relaxed">
+                        Pasa tus 30 minutos de descanso hablando con amigos, repasando o practicando deporte en el patio, no apretado en una fila.
+                    </p>
+                </div>
+
+                <!-- Benefit 2 -->
+                <div class="bg-stone-800/80 rounded-3xl p-6 border border-stone-700/60 hover:border-amber-500/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-wheat-awn"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Producto Local de Plasencia</h3>
+                    <p class="text-stone-400 text-xs leading-relaxed">
+                        Fomentamos la economía del Jerte usando panaderías locales y embutidos de la comarca con máxima frescura diaria.
+                    </p>
+                </div>
+
+                <!-- Benefit 3 -->
+                <div class="bg-stone-800/80 rounded-3xl p-6 border border-stone-700/60 hover:border-emerald-500/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Zero Cero Desperdicio</h3>
+                    <p class="text-stone-400 text-xs leading-relaxed">
+                        La cafetería prepara exactamente las raciones solicitadas antes de las 10:00 h, reduciendo el desperdicio alimentario a cero.
+                    </p>
+                </div>
+
+                <!-- Benefit 4 -->
+                <div class="bg-stone-800/80 rounded-3xl p-6 border border-stone-700/60 hover:border-blue-500/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Proyecto del Alumnado</h3>
+                    <p class="text-stone-400 text-xs leading-relaxed">
+                        Desarrollado como iniciativa técnico-práctica para modernizar los servicios del centro con apoyo del equipo docente.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student & Teacher Testimonials/Stats Section -->
+    <section id="impacto" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5">
+                    <span class="text-brand-600 font-bold text-sm uppercase tracking-widest">Compromiso Educativo</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-stone-900 mt-2 mb-6">Un gran cambio para la comunidad del IES Valle del Jerte</h2>
+                    <p class="text-stone-600 text-base leading-relaxed mb-6">
+                        "BocaJerte ha transformado por completo la dinámica del descanso escolar. El personal de la cafetería trabaja con previsión y los alumnos aprovechan al máximo su tiempo libre."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold">
+                            VJ
+                        </div>
+                        <div>
+                            <p class="font-bold text-stone-900 text-sm">Equipo Directivo & AMPA</p>
+                            <p class="text-xs text-stone-500">IES Valle del Jerte, Plasencia</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="bg-stone-50 p-6 rounded-3xl border border-stone-200">
+                            <i class="fa-solid fa-quote-left text-2xl text-brand-500/40 mb-3"></i>
+                            <p class="text-stone-600 text-xs leading-relaxed mb-4">
+                                "Antes tardaba 15 minutos en la cola y me quedaba sin tiempo para comer tranquilo. Ahora recojo mi bocata en 20 segundos nada más sonar el timbre."
+                            </p>
+                            <p class="font-bold text-stone-900 text-xs">Carlos M. · 2º Bachillerato</p>
+                        </div>
+
+                        <div class="bg-stone-50 p-6 rounded-3xl border border-stone-200">
+                            <i class="fa-solid fa-quote-left text-2xl text-amber-500/40 mb-3"></i>
+                            <p class="text-stone-600 text-xs leading-relaxed mb-4">
+                                "Para el profesorado es comodísimo. Reservamos a primera hora y tenemos el almuerzo listo durante el descanso sin demoras."
+                            </p>
+                            <p class="font-bold text-stone-900 text-xs">Elena G. · Profesora Departamento Lengua</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-950 text-stone-400 py-12 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold">
+                            <i class="fa-solid fa-sandwich"></i>
+                        </div>
+                        <span class="font-heading font-extrabold text-2xl text-white">Boca<span class="text-brand-500">Jerte</span></span>
+                    </div>
+                    <p class="text-xs text-stone-400 max-w-sm leading-relaxed">
+                        Sistema interactivo de reserva de almuerzos para la cafetería del IES Valle del Jerte. Fomentando la innovación, el comercio local y la buena convivencia en Plasencia.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-heading font-bold text-white text-sm mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#como-funciona" class="hover:text-brand-500 transition-colors">¿Cómo Funciona?</a></li>
+                        <li><a href="#menu" class="hover:text-brand-500 transition-colors">Carta de Bocadillos</a></li>
+                        <li><a href="#ventajas" class="hover:text-brand-500 transition-colors">Ventajas Educativas</a></li>
+                        <li><a onclick="openModal()" class="hover:text-brand-500 transition-colors cursor-pointer">Simulador de Reserva</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-heading font-bold text-white text-sm mb-4">Ubicación & Centro</h4>
+                    <p class="text-xs text-stone-400 leading-relaxed mb-2">
+                        <i class="fa-solid fa-location-dot text-brand-500 mr-2"></i> IES Valle del Jerte<br>
+                        Plasencia (Cáceres), España
+                    </p>
+                    <p class="text-xs text-stone-400">
+                        <i class="fa-solid fa-clock text-brand-500 mr-2"></i> Reservas webs: 07:30 - 10:00 h
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-stone-800 text-center text-xs text-stone-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p>© 2026 BocaJerte · Proyecto escolar para el IES Valle del Jerte (Plasencia).</p>
+                <div class="flex gap-4 text-stone-400 text-lg">
+                    <a href="#" class="hover:text-brand-500"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-brand-500"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="hover:text-brand-500"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Pre-Order Modal Demo -->
+    <div id="reservation-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-stone-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="relative bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-stone-100 transform transition-all animate-in fade-in zoom-in duration-200">
+            
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="mb-6 space-y-1">
+                <span class="text-xs font-bold uppercase tracking-wider text-brand-600"><i class="fa-solid fa-bolt mr-1"></i> Demo de Reserva Online</span>
+                <h3 class="font-heading font-extrabold text-2xl text-stone-900">Reserva tu Almuerzo</h3>
+                <p class="text-xs text-stone-500">Completa tus datos para generar el tique con código QR de recogida.</p>
+            </div>
+
+            <!-- Form Content -->
+            <form id="order-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Tu Nombre y Apellidos</label>
+                    <input type="text" required placeholder="Ej. Laura García Gómez" class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm outline-none transition-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Curso / Grupo</label>
+                        <select required class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm outline-none transition-all bg-white">
+                            <option value="">Selecciona...</option>
+                            <option value="1eso">1º ESO</option>
+                            <option value="2eso">2º ESO</option>
+                            <option value="3eso">3º ESO</option>
+                            <option value="4eso">4º ESO</option>
+                            <option value="1bach">1º Bachillerato</option>
+                            <option value="2bach">2º Bachillerato</option>
+                            <option value="fp">Ciclos Formativos FP</option>
+                            <option value="profe">Profesorado / Personal</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Hora de Recogida</label>
+                        <select required class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm outline-none transition-all bg-white">
+                            <option value="11:15">Recreo 1 (11:15 h)</option>
+                            <option value="12:15">Recreo 2 (12:15 h)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Bocadillo Seleccionado</label>
+                    <select id="modal-sandwich-select" required class="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm outline-none transition-all bg-white">
+                        <option value="El Jerteño Ibérico (2,60 €)">El Jerteño Ibérico (2,60 €)</option>
+                        <option value="La Tormenta de Lomo (2,50 €)">La Tormenta de Lomo (2,50 €)</option>
+                        <option value="Tortilla Suprema (2,30 €)">Tortilla Suprema & Alioli (2,30 €)</option>
+                        <option value="Veggie Delicia (2,40 €)">Veggie Delicia del Jerte (2,40 €)</option>
+                        <option value="Serranito del Valle (2,70 €)">Serranito del Valle (2,70 €)</option>
+                        <option value="Pollo Crunch (2,60 €)">Pollo Crunch & Miel-Mostaza (2,60 €)</option>
+                    </select>
+                </div>
+
+                <!-- Extra Drink Option -->
+                <div class="p-3 bg-stone-50 rounded-xl border border-stone-200 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="extra-drink" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
+                        <label for="extra-drink" class="text-xs font-medium text-stone-700 cursor-pointer">Añadir Zumo / Agua fría (+1,00 €)</label>
+                    </div>
+                    <i class="fa-solid fa-bottle-water text-stone-400"></i>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-amber-500 hover:from-brand-700 hover:to-amber-600 text-white font-bold text-sm shadow-lg shadow-brand-500/30 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Confirmar Reserva Expres</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Ticket / Confirmation Screen (Initially Hidden) -->
+            <div id="ticket-result" class="hidden text-center space-y-4 py-4">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <h4 class="font-heading font-extrabold text-xl text-stone-900">¡Reserva Confirmada!</h4>
+                    <p class="text-xs text-stone-500">Muestra este tique digital en la cafetería del IES Valle del Jerte</p>
+                </div>
+
+                <!-- QR Container -->
+                <div class="bg-amber-50/80 p-5 rounded-2xl border border-amber-200/80 max-w-xs mx-auto space-y-3">
+                    <div class="bg-white p-3 rounded-xl inline-block shadow-sm">
+                        <img id="qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=BocaJerte-IES-Valle-Jerte-Demo" alt="Código QR de Recogida" class="w-32 h-32 mx-auto">
+                    </div>
+                    <div class="text-left text-xs space-y-1 text-stone-700">
+                        <p><strong>Nº Pedido:</strong> <span id="order-id" class="text-brand-600 font-mono font-bold">#BJ-8942</span></p>
+                        <p><strong>Bocadillo:</strong> <span id="ticket-sandwich">El Jerteño Ibérico</span></p>
+                        <p><strong>Lugar:</strong> Mostrador Expres Cafetería</p>
+                    </div>
+                </div>
+
+                <button onclick="resetModal()" class="w-full py-2.5 rounded-xl bg-stone-900 text-white text-xs font-semibold hover:bg-stone-800 transition-colors">
+                    Hacer Otra Reserva Demo
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Filter Menu Functionality
+        function filterMenu(category) {
+            const cards = document.querySelectorAll('.sandwich-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'active');
+                btn.classList.add('text-stone-600');
+            });
+
+            event.currentTarget.classList.add('bg-brand-600', 'text-white', 'active');
+            event.currentTarget.classList.remove('text-stone-600');
+
+            cards.forEach(card => {
+                if (category === 'todos' || card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Modal Functionality
+        function openModal() {
+            document.getElementById('reservation-modal').classList.remove('hidden');
+        }
+
+        function openModalWithSandwich(name, price) {
+            openModal();
+            const select = document.getElementById('modal-sandwich-select');
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].text.includes(name)) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('reservation-modal').classList.add('hidden');
+            resetModal();
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const sandwichSelect = document.getElementById('modal-sandwich-select');
+            const selectedSandwich = sandwichSelect.options[sandwichSelect.selectedIndex].text;
+            
+            // Random Order ID
+            const randomID = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('order-id').innerText = `#BJ-${randomID}`;
+            document.getElementById('ticket-sandwich').innerText = selectedSandwich;
+
+            // Generate Dynamic QR Code URL
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=BocaJerte-IES-Valle-Jerte-ID-${randomID}`;
+            document.getElementById('qr-image').src = qrUrl;
+
+            // Hide Form, Show Ticket
+            document.getElementById('order-form').classList.add('hidden');
+            document.getElementById('ticket-result').classList.remove('hidden');
+        }
+
+        function resetModal() {
+            document.getElementById('order-form').classList.remove('hidden');
+            document.getElementById('ticket-result').classList.add('hidden');
+            document.getElementById('order-form').reset();
+        }
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
